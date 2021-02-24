@@ -7,3 +7,5 @@ Link to download Training.zip: <a href="https://drive.google.com/file/d/1lJBh3Gw
 Link to download Test.zip: <a href="https://drive.google.com/file/d/1vUtUsPt_XkAkqRGfrp4XRe-PdAibdOVd/view?usp=sharing">Test.zip</a>
 
 If you want to load the pretrained model then you can download it from <a href="https://essexuniversity.box.com/s/5x3bjimxedhziltn2a2xrxa4kagdvsk2">here</a> and paste it inside models folder.
+
+Learning process of the baseline model can be seen <a href="https://tensorboard.dev/experiment/i4UzJZ8OQBqFEegdKal6Xw/">here</a>.
