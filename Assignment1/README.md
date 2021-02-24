@@ -1,4 +1,4 @@
-## Fores fire detection using Deep Learning
+## Forest fire detection using Deep Learning
 
 In order to run the code. You will need to download the dataset which contains two zip files Training.zip and Test.zip. 
 Download and extract the zip files in respective folders.
