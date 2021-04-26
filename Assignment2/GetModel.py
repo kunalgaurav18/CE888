@@ -8,12 +8,14 @@ from Config import *
 
 
 class GetModel:
+    '''Class to create and tweak the CNN model.'''
 
     def __init__(self):
         self.input_tensor = Input(shape=img_shape)
         self.model = self.create_model()
 
     def create_model(self):
+        '''This method returns the default CNN model obtained by customizing the top layer of Xception model.'''
         model = Xception(input_tensor=self.input_tensor, pooling='None')
         last_layer = model.get_layer('block14_sepconv2_act').output
         x = Flatten(name='flatten')(last_layer)
@@ -23,18 +25,22 @@ class GetModel:
         # x = Dropout(0.4, name='dropout2')(x)
         out = Dense(1, activation='sigmoid', name='output')(x)
         model = Model(self.input_tensor, out, name='MyXception_model')
+        # By degault all the layers are trainable.
         for layers in model.layers:
             layers.trainable = True
         return model
 
     def get_model_summary(self):
+        '''Returns the model summary.'''
         return self.model.summary()
 
     def set_trainable_layers(self, trainable_layers=0):
+        '''Change the number of trainable layers in the model.'''
         for layers in self.model.layers[:-trainable_layers]:
             layers.trainable = False
 
     def get_layer_info(self):
+        '''Get information about the number of total layers, trainable layers and non-trainable layers in the model'''
         trainable = 0
         non_trainable = 0
         total = 0
@@ -49,9 +55,12 @@ class GetModel:
         print('Non-Trainable layers: {}'.format(non_trainable))
 
     def get_model(self):
+        '''Returns the model object.'''
         return self.model
 
     def train_model(self, train, val, patience=10):
+        '''Train the model. Pass the optional variable patience applied to early stopping condition.
+        Returns the history generated during the training process.'''
         self.model.compile(optimizer='adam', loss='binary_crossentropy', metrics='accuracy')
         early_stop = EarlyStopping(patience=patience, verbose=1, monitor='val_accuracy')
         checkpoint = ModelCheckpoint('./{epoch:02d}_{val_accuracy:.04f}.h5',
@@ -65,13 +74,16 @@ class GetModel:
         return history
 
     def load_saved_model(self, model_path):
+        '''Load the model which you have saved earlier.'''
         self.model = load_model(model_path)
         return self.model
 
     def evaluate_model(self, test):
+        '''Evaluate the model. Pass the mandatory parameter either a generator object or array of images.'''
         return self.model.evaluate(test, verbose=1)
 
     def generate_full_report(self, test):
+        '''Generates the full classification report of the model.'''
         pred = (self.model.predict(test, verbose=1) > 0.5).astype('int64')
         print(confusion_matrix(test.classes, pred.ravel()))
         print(classification_report(test.classes, pred.ravel()))
